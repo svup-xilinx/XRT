@@ -208,6 +208,17 @@ public:
   is_nodma() const;
 
   /**
+   * is_zocl() - Is this device a zocl edge device
+   *
+    * Return: true if edge_vendor query is present and non-zero
+    *
+    * The result is cached to avoid repeated query calls.
+   */
+  XRT_CORE_COMMON_EXPORT
+  bool
+  is_zocl() const;
+
+  /**
     * get_ex_error_support() - Does this device support extended error code
     *
     * Return: true if device support extended error code
@@ -509,6 +520,7 @@ public:
  private:
   id_type m_device_id;
   mutable boost::optional<bool> m_nodma = boost::none;
+  mutable std::optional<bool> m_zocl = std::nullopt;
   mutable std::optional<bool> m_ex_error_support = std::nullopt;
 
   using name2idx_type = std::map<std::string, cuidx_type>;

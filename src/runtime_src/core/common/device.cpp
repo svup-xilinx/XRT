@@ -71,6 +71,25 @@ is_nodma() const
 
 bool
 device::
+is_zocl() const
+{
+  std::lock_guard lk(m_mutex);
+  if (m_zocl != std::nullopt)
+    return *m_zocl;
+
+  try {
+    auto vendor = xrt_core::device_query<xrt_core::query::edge_vendor>(this);
+    m_zocl = (vendor != 0);
+  }
+  catch (const std::exception&) {
+    m_zocl = false;
+  }
+
+  return *m_zocl;
+}
+
+bool
+device::
 get_ex_error_support() const
 {
   std::lock_guard lk(m_mutex);
